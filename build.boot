@@ -11,3 +11,8 @@
                  [compojure "1.6.0"]
                  [ring-jetty-component "0.3.1"]
                  [reloaded.repl "0.2.4"]])
+
+(require 'protobuffalo.core)
+(deftask run []
+  (with-pass-thru _
+    (protobuffalo.core/-main)))

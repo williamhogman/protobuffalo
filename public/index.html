@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>protobuffalo is &gt;3 </title>
+  </head>
+  <body>
+    <header>
+      <h1>Protobuffalo</h1>
+    </header>
+    <hr />
+    <div>
+      <h3>edn-&gt;buffalo</h3>
+      <form action="/encode-form" method="post">
+        <p><small>Protip: Use $ to separate inner-classes not dots</small></p>
+        <p>classname: <input type="text" name="cls" placeholder="Classname" /></p>
+        <p><textarea placeholder="Paste edn here" rows="10" cols="50" name="edn"></textarea></p>
+        <p><input type="submit" value="encode" />
+      </form>
+    </div>
+    <hr />
+    <div>
+      <h3>buffalo-&gt;edn</h3>
+      <form action="/decode-form" method="post">
+        <p><small>Protip: Use $ to separate inner-classes not dots</small></p>
+        <p>classname: <input type="text" name="cls" placeholder="classname" /></p>
+        <p><textarea placeholder="Paste buffalo here" rows="10" cols="50" name="protobuf"></textarea></p>
+        <p><input type="submit" value="decode" />
+      </form>
+    </div>
+
+    <hr />
+    <footer>
+      <small>buffalo is love - buffalo is life - dvbf</small>
+    </footer>
+  </body>
+</html>

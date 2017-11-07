@@ -26,6 +26,5 @@
     (if-let [buftype (name->buftype this clsname)]
       (pb/protobuf-dump buftype x))))
 
-(defn new-loader []
-  (map->LoaderContext
-   {:jars ["https://jitpack.io/com/github/zensum/scheduler-proto/f73b532/scheduler-proto-f73b532.jar"]}))
+(defn new-loader [jitpack-token jars]
+  (map->LoaderContext {:jars jars :jitpack-token jitpack-token}))

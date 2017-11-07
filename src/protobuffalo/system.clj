@@ -5,11 +5,11 @@
    [protobuffalo.loader :refer [new-loader]]
    [com.stuartsierra.component :as component]))
 
-(defn new-system []
+(defn new-system [port jitpack-token jars]
   (-> (component/system-map
        :web (new-web)
-       :loader (new-loader)
-       :jetty (jetty-server {:port 3000}))
+       :loader (new-loader jitpack-token jars)
+       :jetty (jetty-server {:port port}))
       (component/system-using
        {:web {:loader :loader}
         :jetty {:app :web}})))

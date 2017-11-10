@@ -10,9 +10,21 @@
                  [ring "1.6.3"]
                  [compojure "1.6.0"]
                  [ring-jetty-component "0.3.1"]
-                 [reloaded.repl "0.2.4"]])
+                 [reloaded.repl "0.2.4"]
+                 [environ "1.1.0"]
+                 [ch.qos.logback/logback-classic "1.2.3"]])
 
 (require 'protobuffalo.core)
 (deftask run []
   (with-pass-thru _
     (protobuffalo.core/-main)))
+
+(deftask uberjar
+  "Builds an uberjar of this project that can be run with java -jar"
+  []
+  (comp
+   (aot :namespace #{'protobuffalo.core})
+   (uber)
+   (jar :file "project.jar" :main 'protobuffalo.core)
+   (sift :include #{#"project.jar"})
+   (target)))

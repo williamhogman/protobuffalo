@@ -1,11 +1,10 @@
 (ns protobuffalo.core
   (:require [protobuffalo.system :refer [new-system]]
-            [com.stuartsierra.component :as component]))
-
-(def jars ["https://jitpack.io/com/github/zensum/scheduler-proto/f73b532/scheduler-proto-f73b532.jar"])
+            [com.stuartsierra.component :as component]
+            [environ.core :refer [env]]))
 
 (defn -main []
-  (-> (new-system 3000 nil jars)
+  (-> (new-system (or (Integer/parseInt (:port env)) 80) (:jitpack-token env) (:jars env))
       (component/start)
       :jetty
       :server

@@ -11,11 +11,18 @@
 (defn- name->buftype [loader clsname]
   (classname->pb (:loader loader) clsname))
 
-(defrecord LoaderContext [jitpack-token jars]
+(defn read-jars-file [jars]
+  (line-seq (reader jars)))
+
+(defn- reload [loader-context]
+  (let [jars (read-jars-file (:jars-file loader-context))
+        loader (create-loader (:jitpack-token loader-context) jars)]
+    (assoc loader-context :loader loader)))
+
+(defrecord LoaderContext [jitpack-token jars-file]
   component/Lifecycle
   (start [this]
-    (let [loader (create-loader jitpack-token jars)]
-      (assoc this :loader loader)))
+    (reload this))
   (stop [this]
     (assoc this :loader nil))
   ProtoCoder
@@ -26,5 +33,5 @@
     (if-let [buftype (name->buftype this clsname)]
       (pb/protobuf-dump buftype x))))
 
-(defn new-loader [jitpack-token jars]
-  (map->LoaderContext {:jars jars :jitpack-token jitpack-token}))
+(defn new-loader [jitpack-token jars-file]
+  (map->LoaderContext {:jars-file jars-file :jitpack-token jitpack-token}))

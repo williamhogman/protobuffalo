@@ -4,7 +4,7 @@
             [environ.core :refer [env]]))
 
 (defn -main []
-  (-> (new-system (or (Integer/parseInt (:port env)) 80) (:jitpack-token env) (or (:jars-file env) "jars-to-load"))
+  (-> (new-system (or (Integer/parseInt (:port env)) 80) [["jitpack" "https://jitpack.io"]] '[[com.github.zensum/scheduler-proto "master"]])
       (component/start)
       :jetty
       :server

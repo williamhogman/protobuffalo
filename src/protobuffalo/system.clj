@@ -3,13 +3,16 @@
    [ring.component.jetty :refer [jetty-server]]
    [protobuffalo.web :refer [new-web]]
    [protobuffalo.loader :refer [new-loader]]
+   [protobuffalo.dep-loader :refer [new-deploader]]
    [com.stuartsierra.component :as component]))
 
-(defn new-system [port jitpack-token jars-file]
+(defn new-system [port repos deps]
   (-> (component/system-map
        :web (new-web)
-       :loader (new-loader jitpack-token jars-file)
+       :dep-loader (new-deploader repos deps)
+       :loader (new-loader)
        :jetty (jetty-server {:port port}))
       (component/system-using
-       {:web {:loader :loader}
+       {:loader {:dep-loader :dep-loader}
+        :web {:loader :loader}
         :jetty {:app :web}})))

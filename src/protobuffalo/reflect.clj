@@ -23,5 +23,7 @@
     (mkpbdef (invoke-static-nullary cls "getDescriptor"))))
 
 (defn classname->pb [loader name]
-  (let [cls (.loadClass loader name true)]
+  (assert (not (nil? loader)))
+  (assert (not (nil? name)))
+  (let [cls (java.lang.Class/forName name true loader)]
     (class->pb cls)))

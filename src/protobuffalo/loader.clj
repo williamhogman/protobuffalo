@@ -1,8 +1,8 @@
 (ns protobuffalo.loader
   (:use [flatland.protobuf.core :as pb]
         [com.stuartsierra.component :as component]
-        [protobuffalo.jcl :refer [create-loader]]
         [protobuffalo.reflect :refer [classname->pb]]
+        [protobuffalo.dep-loader :refer [get-loader]]
         [clojure.java.io :refer [reader]]))
 
 (defprotocol ProtoCoder
@@ -11,22 +11,13 @@
   (reload [this]))
 
 (defn- name->buftype [loader clsname]
-  (classname->pb (:loader loader) clsname))
+  (classname->pb (get-loader (:dep-loader loader)) clsname))
 
-(defn read-jars-file [jars]
-  (line-seq (reader jars)))
-
-(defn- reload-impl [loader-context]
-  (let [jars (read-jars-file (:jars-file loader-context))
-        loader (create-loader (:jitpack-token loader-context) jars)]
-    (assoc loader-context :loader loader)))
-
-(defrecord LoaderContext [jitpack-token jars-file]
+(defrecord LoaderContext [dep-loader]
   component/Lifecycle
   (start [this]
-    (reload-impl this))
-  (stop [this]
-    (assoc this :loader nil))
+    (assoc this :dep-loader dep-loader))
+  (stop [this] this)
   ProtoCoder
   (decode-proto [this clsname bytes]
     (if-let [buftype (name->buftype this clsname)]
@@ -35,7 +26,7 @@
     (if-let [buftype (name->buftype this clsname)]
       (pb/protobuf-dump buftype x)))
   (reload [this]
-    (reload-impl this)))
+    this))
 
-(defn new-loader [jitpack-token jars-file]
-  (map->LoaderContext {:jars-file jars-file :jitpack-token jitpack-token}))
+(defn new-loader []
+  (map->LoaderContext {}))

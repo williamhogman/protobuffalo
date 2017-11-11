@@ -12,7 +12,8 @@
                  [reloaded.repl "0.2.4"]
                  [environ "1.1.0"]
                  [ch.qos.logback/logback-classic "1.2.3"]
-                 [com.cemerick/pomegranate "1.0.0"]])
+                 [com.cemerick/pomegranate "1.0.0"]
+                 [aero "1.1.2"]])
 
 (require 'protobuffalo.core)
 (deftask run []

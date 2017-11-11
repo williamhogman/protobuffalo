@@ -4,14 +4,20 @@
    [protobuffalo.web :refer [new-web]]
    [protobuffalo.loader :refer [new-loader]]
    [protobuffalo.dep-loader :refer [new-deploader]]
-   [com.stuartsierra.component :as component]))
+   [com.stuartsierra.component :as component]
+   [aero.core :refer [read-config]]))
 
-(defn new-system [port repos deps]
+(defn configure [system]
+  (let [config (read-config "config.edn")]
+    (merge-with merge system config)))
+
+(defn new-system []
   (-> (component/system-map
        :web (new-web)
-       :dep-loader (new-deploader repos deps)
+       :dep-loader (new-deploader)
        :loader (new-loader)
-       :jetty (jetty-server {:port port}))
+       :jetty (jetty-server {}))
+      configure
       (component/system-using
        {:loader {:dep-loader :dep-loader}
         :web {:loader :loader}

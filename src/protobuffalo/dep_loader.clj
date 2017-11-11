@@ -45,5 +45,5 @@
         (add-deps! this (:dependencies this))
         (assoc this :loader cl'))))
 
-(defn new-deploader [repos deps]
-  (map->DepLoader {:repositories repos :dependencies deps}))
+(defn new-deploader []
+  (map->DepLoader {}))

@@ -1,0 +1,4 @@
+{:jetty {:port 3001}
+ :dep-loader {
+              :repositories [["jitpack" "https://jitpack.io"]]
+              :dependencies [[com.github.zensum/scheduler-proto "master"]]}}
